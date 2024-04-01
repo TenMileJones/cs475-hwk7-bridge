@@ -11,6 +11,7 @@ public class OneLaneBridge extends Bridge {
         synchronized (conditionVariable) {
             while ((bridge.size() == capacity) || (direction != car.getDirection())) {
                 conditionVariable.wait();
+
                 if (bridge.isEmpty()){
                     direction = car.getDirection();
                 }
@@ -19,7 +20,6 @@ public class OneLaneBridge extends Bridge {
             currentTime++;
             bridge.add(car);
             System.out.println(bridge);
-            conditionVariable.notifyAll();
         }
     }
 

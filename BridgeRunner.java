@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 public class BridgeRunner {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		// check commandline input
 		if (args.length < 2) {
 			System.out.println("Usage: java BridgeRunner <bridge limit> <num cars>");
@@ -28,12 +28,14 @@ public class BridgeRunner {
 		OneLaneBridge b = new OneLaneBridge(Integer.parseInt(args[0]));
 
 		// allocate threads
-		Car[] cars = new Car[Integer.parseInt(args[1])];
+		Thread[] cars = new Thread[Integer.parseInt(args[1])];
 		for (int i = 0; i < Integer.parseInt(args[1]); i++){
-			cars[i] = new Car(i, b);
+			cars[i] = new Thread(new Car(i, b));
+			cars[i].start();
 		}
+
 		for (int i = 0; i < Integer.parseInt(args[1]); i++){
-			cars[i].run();
+			cars[i].join();
 		}
 
 		System.out.println("All cars have crossed!");
