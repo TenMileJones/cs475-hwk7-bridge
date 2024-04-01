@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * Runs all threads
  */
@@ -5,16 +8,36 @@
 public class BridgeRunner {
 
 	public static void main(String[] args) {
+		// check commandline input
+		if (args.length < 2) {
+			System.out.println("Usage: java BridgeRunner <bridge limit> <num cars>");
+			System.exit(0);
+		}
 
-		// TODO - check command line inputs
+		try {
+			if (Integer.parseInt(args[0]) < 1 || Integer.parseInt(args[1]) < 1){
+				System.out.println("Error: bridge limit and/or num cars must be positive.");
+				System.exit(0);
+			}
+		} catch (NumberFormatException e) {
+			System.out.println("Error: Inputs must be integers.");
+			System.exit(0);
+		}
 
-		// TODO - instantiate the bridge
-		
-		// TODO - allocate space for threads
+		//instantiate the bridge
+		OneLaneBridge b = new OneLaneBridge(Integer.parseInt(args[0]));
 
-		// TODO - start then join the threads
+		// allocate threads
+		Car[] cars = new Car[Integer.parseInt(args[1])];
+		for (int i = 0; i < Integer.parseInt(args[1]); i++){
+			cars[i] = new Car(i, b);
+		}
+		for (int i = 0; i < Integer.parseInt(args[1]); i++){
+			cars[i].run();
+		}
 
-		System.out.println("All cars have crossed!!");
+		System.out.println("All cars have crossed!");
 	}
+
 
 }
